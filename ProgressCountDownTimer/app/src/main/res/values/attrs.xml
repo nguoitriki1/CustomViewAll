@@ -93,5 +93,23 @@
 
     </declare-styleable>
 
+    <declare-styleable name="SingleGraphView">
+        <attr name="graph_padding_top" format="integer"/>
+        <attr name="graph_padding_bottom" format="integer"/>
+        <attr name="graph_max_value_ranger" format="integer"/>
+        <attr name="graph_ranger_break" format="integer"/>
+        <attr name="graph_ranger_text_size_top" format="integer"/>
+        <attr name="graph_ranger_text_size_bottom" format="integer"/>
+        <attr name="graph_line_path_stroke_width" format="integer"/>
+        <attr name="graph_selected_stroke_width" format="integer"/>
+        <attr name="graph_text_size_bottom_title" format="integer"/>
+        <attr name="graph_text_color_top" format="color"/>
+        <attr name="graph_text_color_bottom" format="color"/>
+        <attr name="graph_text_color_bottom_title" format="color"/>
+        <attr name="graph_text_color_line_path" format="color"/>
+        <attr name="graph_selected_stroke_color" format="color"/>
+        <attr name="graph_ranger_bottom_height" format="integer"/>
+    </declare-styleable>
+
 
 </resources>

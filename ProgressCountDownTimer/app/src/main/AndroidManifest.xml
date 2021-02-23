@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProgressCountDownTimer">
-        <activity android:name=".GrapActivity" >
+        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".GrapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,8 +19,7 @@
         </activity>
         <activity android:name=".ProfileActivity2" />
         <activity android:name=".ProfileActivity3" />
-        <activity android:name=".ProfileActivity">
-        </activity>
+        <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".ActivityDatePicker" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".MainActivity" />

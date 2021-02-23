@@ -17,6 +17,7 @@ import com.example.progresscountdowntimer.grapview.models.GraphPoint
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.max
 
 /**
  * Created by Swapnil Tiwari on 2019-08-07.
@@ -34,9 +35,9 @@ class CurveGraphView(context: Context, attrs: AttributeSet? = null, defStyleAttr
 
     // Builder fields
     private var verticalGuidelineCount = 0
-    private var intervalCount = 0
     private var horizontalGuidelineCount = 0
     private var graphDataArray = arrayOf<GraphData>()
+    private var intervalCount = 0
     var viewHeight = 0
     var viewWidth = 0
     var graphHeight = 0
@@ -253,7 +254,7 @@ class CurveGraphView(context: Context, attrs: AttributeSet? = null, defStyleAttr
     }
 
     private fun constructPaths(): ArrayList<Path> {
-        val morphedGraphHeight = yAxis.top.toInt() - 12
+        val morphedGraphHeight = yAxis.top.toInt()
         var f1: Float
         var f2: Float
         var f4: Float
@@ -411,7 +412,7 @@ class CurveGraphView(context: Context, attrs: AttributeSet? = null, defStyleAttr
         private fun createPathEffect(pathLength: Float, phase: Float, offset: Float): PathEffect {
             return DashPathEffect(
                 floatArrayOf(pathLength, pathLength),
-                Math.max(phase * pathLength, .0f)
+                max(phase * pathLength, .0f)
             )
         }
     }
