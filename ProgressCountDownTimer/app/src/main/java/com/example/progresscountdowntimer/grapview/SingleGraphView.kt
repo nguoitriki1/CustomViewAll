@@ -58,6 +58,7 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
     private var colorStrokeSelected: Int
     private var dayOfMonth = 30
     private var nameMonth = "Thang 2"
+    private var marginTopViewToBottomView = 20f
 
 
     private var horizontalGuidelineCount = 0
@@ -73,12 +74,14 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
     init {
         val defaultPadding = convertDpToPixel(16, context)
         val a = context.obtainStyledAttributes(attrs, R.styleable.SingleGraphView)
-        marginTopView = a.getInt(R.styleable.SingleGraphView_graph_padding_top, 0)
-        if (marginTopView == 0) {
-            marginTopView = defaultPadding.roundToInt()
+        marginTopView = a.getInt(R.styleable.SingleGraphView_graph_padding_top, 32)
+        marginTopView = if (marginTopView == 0) {
+            defaultPadding.roundToInt()
         } else {
-            marginTopView += defaultPadding.roundToInt()
+            val marginTop =  convertDpToPixel(marginTopView, context)
+            (marginTop + defaultPadding).roundToInt()
         }
+        marginTopViewToBottomView = defaultPadding
         marginBottomView = convertDpToPixel(
             a.getInt(R.styleable.SingleGraphView_graph_padding_bottom, 0),
             context
@@ -218,15 +221,21 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
     private fun initValueData(w: Int, h: Int) {
         listValueH.clear()
         listValueV.clear()
+        val bottomViewTop = (h - bottomViewHeight - marginTopViewToBottomView).roundToInt()
         viewTopLeftRect.set(
             0 + marginLeftView,
             0 + marginTopView,
             bottomViewHeight,
-            h - bottomViewHeight
+            bottomViewTop
         )
-        viewTopRightRect.set(bottomViewHeight, 0 + marginTopView, w, h - bottomViewHeight)
-        viewBottomRightRect.set(bottomViewHeight, viewTopRightRect.bottom, w, h)
-        viewBottomLeftRect.set(0, viewTopRightRect.bottom, bottomViewHeight, h)
+        viewTopRightRect.set(bottomViewHeight, 0 + marginTopView, w, bottomViewTop)
+
+        val topViewBottom = (h - bottomViewHeight)
+
+        viewBottomRightRect.set(bottomViewHeight, topViewBottom, w, h)
+        viewBottomLeftRect.set(0, topViewBottom, bottomViewHeight, h)
+
+
         xLeftGuideline = viewTopRightRect.left.toFloat()
         if (viewTopRightRect.top < viewTopRightRect.bottom) {
             if (maxValue > 0) {
@@ -245,7 +254,7 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
                     listValueV.add(GraphVValueModel(i.toFloat(), breakVValue, i.toString()))
                     breakVValue += rangeMarginValue
                 }
-                radiusSelected = rangeMarginValue / 4f
+                radiusSelected = rangeMarginValue / 6f
             }
         }
 
@@ -266,8 +275,8 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
 
     }
 
-    private fun createPoint(point: GraphValueInput): GraphPointMap? {
-        val xPoint = listValueV.firstOrNull { point.x == it.id }?.pivotX
+    private fun createPoint(point: GraphValueInput): GraphPointMap {
+        val xPoint = viewTopRightRect.left + ((point.x-1) * rangeMarginValue)
         val yPoint = convertValue(
             point.y,
             350f,
@@ -276,71 +285,8 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
             viewTopRightRect.bottom.toFloat()
         )
 
-        xPoint?.let {
             return GraphPointMap(xPoint, yPoint)
-        }
-        return null
     }
-
-//    private fun constructPaths(): ArrayList<Path> {
-//        val morphedGraphHeight = yAxis.top.toInt()
-//        var f1: Float
-//        var f2: Float
-//        var f4: Float
-//        val scaleFactor = maxVal / (morphedGraphHeight - graphPadding)
-//        val pathList = ArrayList<Path>()
-//        for (i in graphDataArray.indices) {
-//            val graphData = graphDataArray[i]
-//            updateStyleForGraphData(i, graphData)
-//            val pointMap = graphData.graphDataPoints
-//            var prevDataPoint = GraphPoint(graphPadding, morphedGraphHeight)
-//            val path = Path()
-//            path.moveTo(graphPadding.toFloat(), morphedGraphHeight.toFloat())
-//            val lastXPoint = (graphWidth - graphPadding * 2).toFloat()
-//            val gpList = ArrayList<GraphPoint>()
-//            for (spanIndex in 0..xSpan) {
-//                pointMap?.get(spanIndex)?.let {
-//                    val graphPoint = it
-//                    if (graphPoint.spanPos == 0) {
-//                        path.lineTo(
-//                            graphPadding.toFloat(),
-//                            morphedGraphHeight - graphPoint.value / scaleFactor
-//                        )
-//                        graphPoint.x = graphPadding.toFloat()
-//                    } else {
-//                        graphPoint.x =
-//                            (graphPoint.spanPos * (graphWidth - graphPadding * 2) / xSpan).toFloat()
-//                    }
-//                    if (scaleFactor > 0) {
-//                        graphPoint.y = morphedGraphHeight - graphPoint.value / scaleFactor
-//                    } else {
-//                        graphPoint.y = morphedGraphHeight.toFloat()
-//                    }
-//                    if (graphData.isStraightLine) {
-//                        path.lineTo(graphPoint.x, graphPoint.y)
-//                    } else {
-//                        if (spanIndex > 0) {
-//                            f1 = (prevDataPoint.x + graphPoint.x) / 2
-//                            f2 = prevDataPoint.y
-//                            f4 = graphPoint.y
-//                            path.cubicTo(f1, f2, f1, f4, graphPoint.x, graphPoint.y)
-//                        }
-//                    }
-//                    prevDataPoint = graphPoint
-//                    if (graphPoint.y.toInt() != morphedGraphHeight) {
-//                        gpList.add(graphPoint)
-//                    }
-//                }
-//            }
-//            graphPointsList.add(gpList)
-//            path.lineTo(lastXPoint, morphedGraphHeight.toFloat())
-//            path.lineTo(lastXPoint, yAxis.top)
-//            path.lineTo(graphPadding.toFloat(), yAxis.top)
-//            path.close()
-//            pathList.add(path)
-//        }
-//        return pathList
-//    }
 
     private fun setupLinePath() {
         linePath.reset()
@@ -350,7 +296,7 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         }
         if (listValueInput.size == 1) {
             val point = listValueInput.get(0)
-            createPoint(point)?.let {
+            createPoint(point).let {
                 linePath.moveTo(it.pivotX, it.pivotY)
                 linePathGradient.moveTo(it.pivotX, it.pivotY)
             }
@@ -359,10 +305,10 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         if (listValueInput.size == 2) {
             val point1 = listValueInput.get(0)
             val point2 = listValueInput.get(1)
-            createPoint(point1)?.let {
+            createPoint(point1).let {
                 linePath.moveTo(it.pivotX, it.pivotY)
                 linePathGradient.moveTo(it.pivotX, it.pivotY)
-                createPoint(point2)?.let {
+                createPoint(point2).let {
                     linePath.lineTo(it.pivotX, it.pivotY)
                     linePathGradient.lineTo(it.pivotX, it.pivotY)
                 }
@@ -371,53 +317,50 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         }
 
         val firstPoint = listValueInput[0]
-        createPoint(firstPoint)?.let {
+        createPoint(firstPoint).let {
             linePath.moveTo(it.pivotX, it.pivotY)
             linePathGradient.moveTo(it.pivotX, it.pivotY)
-            for (i in 1 until (listValueInput.size - 1)) {
+            for (i in 1 until (listValueInput.size)) {
                 val prevPoint = createPoint(listValueInput[i - 1])
                 val currPoint = createPoint(listValueInput[i])
-                val nextPoint = createPoint(listValueInput[i + 1])
 
-                if (prevPoint != null && currPoint != null && nextPoint != null) {
-                    val x1 = (prevPoint.pivotX + currPoint.pivotX)/2f
-                    val y1 = (prevPoint.pivotY + currPoint.pivotY)/2f
+                    val f1 = (prevPoint.pivotX + currPoint.pivotX) / 2f
+                    val f2 = prevPoint.pivotY
 
-//                    val x2 = (prevPoint.pivotX + x1)/2f
-//                    val y2 = (prevPoint.pivotY + y1)/2f
+                    val f4 = currPoint.pivotY
 
-                    val x2 = currPoint.pivotX
-                    val y2 = currPoint.pivotY
-
-                    val x3 = (nextPoint.pivotX + currPoint.pivotX)/2f
-                    val y3 = (nextPoint.pivotY + currPoint.pivotY)/2f
-
-//                    val x5 = (x4 + currPoint.pivotX)/2f
-//                    val y5 = (y4 + currPoint.pivotY)/2f
-
-                    linePath.cubicTo(x1, y1, x2, y2, x3, y3)
-//                    linePath.cubicTo(x3, y3, x4, y4, x5, y5)
-                    linePathGradient.cubicTo(x1, y1, x2, y2, x3, y3)
-                }
+                    linePath.cubicTo(f1, f2, f1, f4, currPoint.pivotX, currPoint.pivotY)
+                    linePathGradient.cubicTo(f1, f2, f1, f4, currPoint.pivotX, currPoint.pivotY)
             }
-            val lastPoint = createPoint(listValueInput.get(listValueInput.size - 1))
-            lastPoint?.let {
-                linePath.lineTo(lastPoint.pivotX, lastPoint.pivotY)
-                linePathGradient.lineTo(lastPoint.pivotX, lastPoint.pivotY)
+            val lastPoint = createPoint(listValueInput[listValueInput.size - 1])
+            lastPoint.let {
                 if (lastPoint.pivotX < viewBottomRightRect.right) {
-                    linePath.lineTo(viewBottomRightRect.right.toFloat(), lastPoint.pivotY)
-                    linePathGradient.lineTo(viewBottomRightRect.right.toFloat(), lastPoint.pivotY)
+                    linePath.lineTo(viewTopRightRect.right.toFloat(), lastPoint.pivotY)
+                    linePathGradient.lineTo(
+                        viewTopRightRect.right.toFloat(),
+                        lastPoint.pivotY
+                    )
                 }
-                linePathGradient.lineTo(
-                    viewTopRightRect.right.toFloat(),
-                    viewTopRightRect.bottom.toFloat()
-                )
-                linePathGradient.lineTo(
-                    viewTopRightRect.left.toFloat(),
-                    viewTopRightRect.bottom.toFloat()
-                )
-                linePathGradient.close()
             }
+
+    //            val lastPoint = createPoint(listValueInput[listValueInput.size - 1])
+    //            lastPoint?.let {
+    //                //linePath.lineTo(lastPoint.pivotX, lastPoint.pivotY)
+    //                linePathGradient.lineTo(lastPoint.pivotX, lastPoint.pivotY)
+    //                if (lastPoint.pivotX < viewBottomRightRect.right) {
+    //                    //linePath.lineTo(viewBottomRightRect.right.toFloat(), lastPoint.pivotY)
+    //                    linePathGradient.lineTo(viewBottomRightRect.right.toFloat(), lastPoint.pivotY)
+    //                }
+    //                linePathGradient.lineTo(
+    //                    viewTopRightRect.right.toFloat(),
+    //                    viewTopRightRect.bottom.toFloat()
+    //                )
+    //                linePathGradient.lineTo(
+    //                    viewTopRightRect.left.toFloat(),
+    //                    viewTopRightRect.bottom.toFloat()
+    //                )
+    //                linePathGradient.close()
+    //            }
         }
 
     }
@@ -459,9 +402,9 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         paintLineBottom.color = Color.RED
         canvas.drawLine(
             0f,
-            viewTopRightRect.bottom.toFloat(),
+            viewBottomRightRect.top.toFloat(),
             width.toFloat(),
-            viewTopRightRect.bottom.toFloat(),
+            viewBottomRightRect.top.toFloat(),
             paintLineBottom
         )
     }
