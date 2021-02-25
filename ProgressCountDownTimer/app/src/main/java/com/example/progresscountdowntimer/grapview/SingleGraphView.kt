@@ -72,7 +72,7 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
     private var colorTextLinePath: Int
     private var colorBackground: Int
     private var colorStrokeSelected: Int
-    private var dayOfMonth = 30
+    private var countNumber = 30
     private var nameMonth = "April"
     private var marginTopViewToBottomView = 20f
     private var mFlingVelocity = 0f
@@ -190,6 +190,11 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
             }
             true
         }
+    }
+
+    fun setNumberCount(count : Int){
+        this.countNumber = count
+        invalidate()
     }
 
     fun setMarginTopView(dpMargin: Int) {
@@ -315,7 +320,7 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
                     valueString -= breakValueString
                 }
 
-                for (i in 1..dayOfMonth) {
+                for (i in 1..countNumber) {
                     listValueV.add(GraphVValueModel(i.toFloat(), breakVValue, i.toString()))
                     breakVValue += rangeMarginValue
                 }
