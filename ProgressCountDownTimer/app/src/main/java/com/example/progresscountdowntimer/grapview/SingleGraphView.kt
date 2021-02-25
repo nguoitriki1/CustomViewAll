@@ -22,9 +22,6 @@ data class GraphVValueModel(val id: Float, val pivotX: Float, val valueText: Str
 data class GraphValueInput(val x: Float, val y: Float)
 data class GraphPointMap(val pivotX: Float, val pivotY: Float)
 
-private const val SWIPE_MIN_DISTANCE = 120
-private const val SWIPE_MAX_OFF_PATH = 250
-private const val SWIPE_THRESHOLD_VELOCITY = 200
 
 class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int) :
     View(context, attrs, defStyleAttr) {
