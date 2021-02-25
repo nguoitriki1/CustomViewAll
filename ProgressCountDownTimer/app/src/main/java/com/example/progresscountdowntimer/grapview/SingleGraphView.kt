@@ -172,15 +172,6 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         backgroundColorPaint.color = colorBackground
         backgroundColorPaint.style = Paint.Style.FILL
 
-        listValueInput.add(GraphValueInput(1f, 250f))
-        listValueInput.add(GraphValueInput(2f, 152f))
-        listValueInput.add(GraphValueInput(3f, 350f))
-        listValueInput.add(GraphValueInput(4f, 0f))
-        listValueInput.add(GraphValueInput(5f, 90f))
-        listValueInput.add(GraphValueInput(6f, 50f))
-        listValueInput.add(GraphValueInput(7f, 299f))
-        listValueInput.add(GraphValueInput(8f, 250f))
-
         gestureDetector = GestureDetector(context, GestureListener())
         isClickable = true
         isFocusable = true
@@ -589,6 +580,12 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
             }
             invalidate()
         }
+    }
+
+    fun setInputValue(listValueInput: java.util.ArrayList<GraphValueInput>) {
+        this.listValueInput.clear()
+        this.listValueInput.addAll(listValueInput)
+        invalidate()
     }
 
     inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
