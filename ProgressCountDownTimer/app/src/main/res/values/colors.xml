@@ -45,4 +45,8 @@
     <color name="scaleTextColor">#AD000000</color>
     <color name="axisColor">#AD000000</color>
     <color name="blackColor">#AD000000</color>
+    <color name="dashColor">#E0DDF5</color>
+    <color name="colorGraphStrokeSelected">#F76068</color>
+    <color name="colorOrange">#F89C62</color>
+    <color name="colorTextBlack">#5A647B</color>
 </resources>

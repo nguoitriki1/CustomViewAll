@@ -106,7 +106,9 @@
         <attr name="graph_text_color_top" format="color"/>
         <attr name="graph_text_color_bottom" format="color"/>
         <attr name="graph_text_color_bottom_title" format="color"/>
+        <attr name="graph_text_color_value_selected" format="color"/>
         <attr name="graph_text_color_line_path" format="color"/>
+        <attr name="graph_background_color" format="color"/>
         <attr name="graph_selected_stroke_color" format="color"/>
         <attr name="graph_ranger_bottom_height" format="integer"/>
     </declare-styleable>
