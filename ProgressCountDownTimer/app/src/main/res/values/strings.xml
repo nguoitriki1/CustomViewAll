@@ -16,4 +16,16 @@
     <string name="picker_weight_lbs">LBS</string>
     <string name="profile">Profile</string>
     <string name="next">NEXT</string>
+    <string name="how_do_you_feel">How do you feel?</string>
+    <string name="con">CONTINUE</string>
+    <string name="quit">QUIT</string>
+    <string name="just_keep_going">You’ve gotten this far, just keep going</string>
+    <string name="never_give">Never give up!</string>
+    <string name="too_hard">Too Hard</string>
+    <string name="so_easy">So Easy</string>
+    <string name="know_how_to_do_it">Don’t Know How To Do It</string>
+    <string name="i_like_it">I Like It, I’ll Back Later</string>
+    <string name="others">Others</string>
+    <string name="other_feedback">Other feedback?</string>
+    <string name="let_us_know">Let us know</string>
 </resources>

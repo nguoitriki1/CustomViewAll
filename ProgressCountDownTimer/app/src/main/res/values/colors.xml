@@ -49,4 +49,6 @@
     <color name="colorGraphStrokeSelected">#F76068</color>
     <color name="colorOrange">#F89C62</color>
     <color name="colorTextBlack">#5A647B</color>
+    <color name="whiteTrans">#80FFFFFF</color>
+    <color name="colorTextBlue">#4CA8EF</color>
 </resources>
