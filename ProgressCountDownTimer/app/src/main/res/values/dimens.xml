@@ -6,4 +6,6 @@
     <dimen name="WheelMargins">8dp</dimen>
     <dimen name="wheel_spacing">30dp</dimen>
     <dimen name="wheelSelectorHeight">40dp</dimen>
+    <dimen name="mcv_arrow_padding">4dp</dimen>
+    <dimen name="mcv_arrow_margin">4dp</dimen>
 </resources>

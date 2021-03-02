@@ -15,7 +15,7 @@
     <string name="picker_weight_kg">Kg</string>
     <string name="picker_weight_lbs">LBS</string>
     <string name="profile">Profile</string>
-    <string name="next">NEXT</string>
+    <string name="next_upcase">NEXT</string>
     <string name="how_do_you_feel">How do you feel?</string>
     <string name="con">CONTINUE</string>
     <string name="quit">QUIT</string>
@@ -28,4 +28,7 @@
     <string name="others">Others</string>
     <string name="other_feedback">Other feedback?</string>
     <string name="let_us_know">Let us know</string>
+    <string name="previous">Go to previous</string>
+    <string name="go_to_next">Go to next</string>
+    <string name="calendar">Calendar</string>
 </resources>
