@@ -28,6 +28,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progresscountdowntimer.R;
@@ -165,7 +166,7 @@ public class MaterialCalendarView extends ViewGroup {
   private final CalendarPager pager;
   private CalendarPagerAdapter<?> adapter;
   private CalendarDay currentMonth;
-  private LinearLayout topbar;
+  private final ConstraintLayout topbar;
   private CalendarMode calendarMode;
   /**
    * Used for the dynamic calendar height.

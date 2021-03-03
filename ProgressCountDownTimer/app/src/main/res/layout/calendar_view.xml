@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header"
@@ -16,6 +16,9 @@
       android:background="?selectableItemBackgroundBorderless"
       android:contentDescription="@string/previous"
       android:padding="@dimen/mcv_arrow_padding"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/month_name"
+      app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/mcv_action_previous" />
 
   <TextView
@@ -24,12 +27,16 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:gravity="center"
-      android:textSize="24dp"
-      android:textColor="@color/colorTextBlue"
       android:fontFamily="@font/sanfrancisco_bold"
+      android:gravity="center"
       android:paddingLeft="8dp"
       android:paddingRight="8dp"
+      android:textColor="@color/colorTextBlue"
+      android:textSize="24dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       tools:text="August 2018" />
 
   <ImageButton
@@ -40,6 +47,20 @@
       android:background="?selectableItemBackgroundBorderless"
       android:contentDescription="@string/go_to_next"
       android:padding="@dimen/mcv_arrow_padding"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@+id/month_name"
+      app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/mcv_action_next" />
 
-</LinearLayout>
+  <View
+      android:id="@+id/view11"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      android:layout_alignParentBottom="true"
+      android:layout_weight="1"
+      android:background="@color/colorGuidleGray"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,4 +51,5 @@
     <color name="colorTextBlack">#5A647B</color>
     <color name="whiteTrans">#80FFFFFF</color>
     <color name="colorTextBlue">#4CA8EF</color>
+    <color name="colorGuidleGray">#F2F2F2</color>
 </resources>
