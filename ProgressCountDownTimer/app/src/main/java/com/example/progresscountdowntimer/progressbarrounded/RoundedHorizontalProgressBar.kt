@@ -23,7 +23,7 @@ class RoundedHorizontalProgressBar(context: Context, attrs: AttributeSet? = null
     private var animCount: ValueAnimator? = null
     private val maxAnimation: Long = 1000
     private val minAnimation: Long = 500
-    private lateinit var stringValue: String
+    private var stringValue: String = "0"
     private val textPaint: Paint = Paint()
     private val mRectView = Rect()
     private var textPoint: PointF? = null

@@ -9,27 +9,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProgressCountDownTimer">
-        <activity android:name=".CalendarActivity">
+        <activity android:name=".TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".ActivityDatePicker" />
         <activity android:name=".EndExrciseActivity" />
+        <activity android:name=".EndExrciseActivity2" />
         <activity android:name=".GrapActivity" />
         <activity android:name=".ProfileActivity2" />
         <activity android:name=".ProfileActivity3" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".ActivityDatePicker" />
-        <activity android:name=".MainActivity2" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity2"></activity>
+        <activity android:name=".MainActivity"></activity>
+
         <provider
             android:name=".calendar.MaterialCalendarViewInitProvider"
             android:authorities="${applicationId}.materialcalendarviewinitprovider"
             android:enabled="true"
-            android:exported="false"
-            />
+            android:exported="false" />
     </application>
 
 </manifest>

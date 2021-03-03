@@ -24,6 +24,7 @@ import android.graphics.*
 import android.os.Build
 import android.os.CountDownTimer
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
@@ -240,7 +241,7 @@ class ContinuableCircleCountDownView : View {
     fun addTimeSeconds(timeSeconds: Int) {
         var secondsValue = timeSeconds
         secondsValue *= 1000
-        val timeFinished = timeMilis - mMillisUntilFinished
+        val timeFinished = timeMilis - mMillisUntilFinished +1000
         timeMilis += secondsValue
         mMillisUntilFinished += secondsValue
         if (mMillisUntilFinished <= 0) {
@@ -265,7 +266,16 @@ class ContinuableCircleCountDownView : View {
                 timeMilis = oldtimeMilis
                 cancel()
             } else {
-                angle = calculateAngle(timeFinished / 1000f)
+                val calculateAngle = calculateAngle(timeFinished /1000f)
+                if (timeSeconds < 0){
+                    if (calculateAngle > angle){
+                        angle = calculateAngle
+                    }
+                }else if (timeSeconds > 0){
+                    if (calculateAngle < angle){
+                        angle = calculateAngle
+                    }
+                }
                 invalidate()
             }
         }
@@ -275,7 +285,16 @@ class ContinuableCircleCountDownView : View {
                 return
             } else {
                 stop()
-                angle = calculateAngle(timeFinished / 1000f)
+                val calculateAngle = calculateAngle(timeFinished / 1000f)
+                if (timeSeconds < 0){
+                    if (calculateAngle > angle){
+                        angle = calculateAngle
+                    }
+                }else if (timeSeconds > 0){
+                    if (calculateAngle < angle){
+                        angle = calculateAngle
+                    }
+                }
                 continueE()
             }
         }
@@ -296,6 +315,7 @@ class ContinuableCircleCountDownView : View {
             override fun onTick(millisUntilFinished: Long) {
                 mMillisUntilFinished = millisUntilFinished
                 invalidate()
+                Log.d("abc","time  : ${(timeMilis - mMillisUntilFinished)/1000f}")
                 listener?.onTick(timeMilis - mMillisUntilFinished)
             }
 

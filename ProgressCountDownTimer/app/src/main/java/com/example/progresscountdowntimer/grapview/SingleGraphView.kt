@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
 
 data class GraphHValueModel(val pivotY: Float, val valueText: String)
 data class GraphVValueModel(val id: Float, val pivotX: Float, val valueText: String)
-data class GraphValueInput(val x: Float, val y: Float)
+data class GraphValueInput(val x: Float, var y: Float)
 data class GraphPointMap(val pivotX: Float, val pivotY: Float)
 
 
@@ -114,15 +114,27 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         sizeTextBottomTitle =
             a.getFloat(R.styleable.SingleGraphView_graph_text_size_bottom_title, 12f)
         colorTextTop =
-            a.getColor(R.styleable.SingleGraphView_graph_text_color_top,ContextCompat.getColor(context,R.color.colorTextGray))
+            a.getColor(
+                R.styleable.SingleGraphView_graph_text_color_top,
+                ContextCompat.getColor(context, R.color.colorTextGray)
+            )
         colorTextBottom =
-            a.getColor(R.styleable.SingleGraphView_graph_text_color_bottom, ContextCompat.getColor(context,R.color.colorTextBlack))
+            a.getColor(
+                R.styleable.SingleGraphView_graph_text_color_bottom,
+                ContextCompat.getColor(context, R.color.colorTextBlack)
+            )
         colorTextBottomTitle =
-            a.getColor(R.styleable.SingleGraphView_graph_text_color_bottom_title, ContextCompat.getColor(context,R.color.colorTextBlack))
+            a.getColor(
+                R.styleable.SingleGraphView_graph_text_color_bottom_title,
+                ContextCompat.getColor(context, R.color.colorTextBlack)
+            )
         colorTextValueSelected =
             a.getColor(R.styleable.SingleGraphView_graph_text_color_value_selected, Color.RED)
         colorTextLinePath =
-            a.getColor(R.styleable.SingleGraphView_graph_text_color_line_path, ContextCompat.getColor(context,R.color.colorOrange))
+            a.getColor(
+                R.styleable.SingleGraphView_graph_text_color_line_path,
+                ContextCompat.getColor(context, R.color.colorOrange)
+            )
         colorBackground =
             a.getColor(R.styleable.SingleGraphView_graph_background_color, Color.WHITE)
         colorStrokeSelected =
@@ -183,7 +195,7 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         }
     }
 
-    fun setNumberCount(count : Int){
+    fun setNumberCount(count: Int) {
         this.countNumber = count
         invalidate()
     }
@@ -228,12 +240,12 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
         }
     }
 
-    fun setBottomTitle(title : String){
+    fun setBottomTitle(title: String) {
         nameMonth = title
         invalidate()
     }
 
-    fun removeCurrentSelected(){
+    fun removeCurrentSelected() {
         graphPointMapSelected = null
         invalidate()
     }
@@ -336,21 +348,31 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
 
     }
 
+    fun setGradientPaint(colorStartRes: Int,colorEndRes: Int) {
+        gradientPaint.shader = LinearGradient(
+            0f, 0f, 0f, height.toFloat(),
+            ContextCompat.getColor(context,colorStartRes),
+            ContextCompat.getColor(context,colorEndRes), Shader.TileMode.MIRROR
+        )
+        invalidate()
+    }
+
+
     private fun createPoint(point: GraphValueInput): GraphPointMap {
         val xPoint = viewTopRightRect.left + ((point.x - 1) * rangeMarginValue)
         var yPoint = convertValue(
             point.y,
-            350f,
+            maxValue.toFloat(),
             0f,
             viewTopRightRect.top.toFloat(),
             viewTopRightRect.bottom.toFloat()
         )
 
-        if (yPoint == viewTopRightRect.top.toFloat()){
-            yPoint = (viewTopRightRect.top + (linePathStrokeWidth/2f))
+        if (yPoint == viewTopRightRect.top.toFloat()) {
+            yPoint = (viewTopRightRect.top + (linePathStrokeWidth / 2f))
         }
-        if (yPoint == viewTopRightRect.bottom.toFloat()){
-            yPoint = (viewTopRightRect.bottom - (linePathStrokeWidth/2f))
+        if (yPoint == viewTopRightRect.bottom.toFloat()) {
+            yPoint = (viewTopRightRect.bottom - (linePathStrokeWidth / 2f))
         }
 
         return GraphPointMap(xPoint, yPoint)
@@ -585,7 +607,12 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
     fun setInputValue(listValueInput: java.util.ArrayList<GraphValueInput>) {
         this.listValueInput.clear()
         this.listValueInput.addAll(listValueInput)
+        initValueData(width, height)
         invalidate()
+    }
+
+    fun clearView() {
+        setInputValue(ArrayList())
     }
 
     inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
@@ -600,8 +627,6 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
             y = 0f;
             return true
         }
-
-
 
 
         override fun onScroll(
@@ -629,11 +654,12 @@ class SingleGraphView(context: Context, attrs: AttributeSet? = null, defStyleAtt
                 if (e1.y - e2.y > SWIPE_MIN_DISTANCE) onSwipeUp() else if (e2.y - e1.y > SWIPE_MIN_DISTANCE) onSwipeDown()
             } else {
                 if (abs(velocityX) < SWIPE_THRESHOLD_VELOCITY) return false
-                if (e1.x - e2.x > SWIPE_MIN_DISTANCE) onSwipeLeft(velocityX) else if (e2.x - e1.x > SWIPE_MIN_DISTANCE) onSwipeRight(velocityX)
+                if (e1.x - e2.x > SWIPE_MIN_DISTANCE) onSwipeLeft(velocityX) else if (e2.x - e1.x > SWIPE_MIN_DISTANCE) onSwipeRight(
+                    velocityX
+                )
             }
             return super.onFling(e1, e2, velocityX, velocityY)
         }
-
 
 
         private fun onSwipeRight(velocityX: Float) {

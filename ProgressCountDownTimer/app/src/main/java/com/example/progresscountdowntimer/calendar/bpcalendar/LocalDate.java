@@ -380,9 +380,11 @@ public final class LocalDate
     private static    LocalDate create(int year, Month month, int dayOfMonth) {
         if (dayOfMonth > 28 && dayOfMonth > month.length(IsoChronology.INSTANCE.isLeapYear(year))) {
             if (dayOfMonth == 29) {
-                throw new DateTimeException("Invalid date 'February 29' as '" + year + "' is not a leap year");
+                return new    LocalDate(year, month.getValue(), 29);
+//                throw new DateTimeException("Invalid date 'February 29' as '" + year + "' is not a leap year");
             } else {
-                throw new DateTimeException("Invalid date '" + month.name() + " " + dayOfMonth + "'");
+                return new    LocalDate(year, month.getValue(), 28);
+//                throw new DateTimeException("Invalid date '" + month.name() + " " + dayOfMonth + "'");
             }
         }
         return new    LocalDate(year, month.getValue(), dayOfMonth);

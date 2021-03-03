@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -823,14 +824,19 @@ public class MaterialCalendarView extends ViewGroup {
   /**
    * @param date a Date set to a day to select. Null to clear selection
    */
-  public void setSelectedDate(@Nullable LocalDate date) {
-    setSelectedDate(CalendarDay.from(date));
+  public void setSelectedDate(@Nullable LocalDate date,Boolean isMoveToDate) {
+    CalendarDay from = CalendarDay.from(date);
+    if (isMoveToDate){
+      setCurrentDate(from);
+    }
+    setSelectedDate(from);
+    dispatchOnDateSelected(from,true);
   }
 
   /**
    * @param date a Date to set as selected. Null to clear selection
    */
-  public void setSelectedDate(@Nullable CalendarDay date) {
+  private void setSelectedDate(@Nullable CalendarDay date) {
     clearSelection();
     if (date != null) {
       setDateSelected(date, true);
@@ -872,7 +878,7 @@ public class MaterialCalendarView extends ViewGroup {
    *
    * @param calendar a Calendar set to a day to focus the calendar on. Null will do nothing
    */
-  public void setCurrentDate(@Nullable LocalDate calendar) {
+  private void setCurrentDate(@Nullable LocalDate calendar) {
     setCurrentDate(CalendarDay.from(calendar));
   }
 
@@ -883,11 +889,34 @@ public class MaterialCalendarView extends ViewGroup {
    *
    * In week mode, the calendar will be set to the corresponding week.
    *
-   * @param day a CalendarDay to focus the calendar on. Null will do nothing
+   * CalendarDay to focus the calendar on. Null will do nothing
    */
-  public void setCurrentDate(@Nullable CalendarDay day) {
+  public void setCurrentDate(String month,String year) {
+    CalendarDay currentDate = getCurrentDate();
+    int monthCurrent = currentDate.getMonth();
+    int yearCurrent = currentDate.getMonth();
+    if (!TextUtils.isEmpty(month)){
+      try {
+        monthCurrent = Integer.parseInt(month);
+      }catch (Exception e){
+        monthCurrent =  currentDate.getMonth();
+      }
+    }
+    if (!TextUtils.isEmpty(year)){
+      try {
+        yearCurrent = Integer.parseInt(year);
+      }catch (Exception e){
+        yearCurrent = currentDate.getYear();
+      }
+    }
+    CalendarDay calendarDay = CalendarDay.from(yearCurrent, monthCurrent, 10);
+    setCurrentDate(calendarDay, true);
+  }
+
+  private void setCurrentDate(@Nullable CalendarDay day) {
     setCurrentDate(day, true);
   }
+
 
   /**
    * Set the calendar to a specific month or week based on a date.
@@ -899,7 +928,7 @@ public class MaterialCalendarView extends ViewGroup {
    * @param day a CalendarDay to focus the calendar on. Null will do nothing
    * @param useSmoothScroll use smooth scroll when changing months.
    */
-  public void setCurrentDate(@Nullable CalendarDay day, boolean useSmoothScroll) {
+  private void setCurrentDate(@Nullable CalendarDay day, boolean useSmoothScroll) {
     if (day == null) {
       return;
     }
